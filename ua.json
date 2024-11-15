@@ -1,0 +1,9 @@
+{
+  "recommended": "Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.3.4) Gecko/",
+  "desktop": [
+    "Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.3.4) Gecko/"
+  ],
+  "mobile": [
+    "Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.3.4) Gecko/"
+  ]
+}
