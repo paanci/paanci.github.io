@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Images</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    #chapterImages img { 
+    line-height; 0%;
+    display: block;
+}
+</style>
+
+</head>
+<body>
+
+<div id="overlay" style="display: none;"><img src="http://tachiyomi.wap.sh/icon/overlay.svg"></div>
+
+<div id="chapterImages"></div>
+
+<!-- Tombol Next Chapter -->
+<button id="nextChapterButton" style="display: none;">Next Chapter ➜</button>
+
+<script>
+$(document).ready(function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const chapterUrl = urlParams.get('chapterUrl');
+
+    if (chapterUrl) {
+        fetchChapterImages(chapterUrl);
+    } else {
+        alert("Chapter URL tidak ditemukan.");
+    }
+
+    async function fetchChapterImages(chapterUrl) {
+        $('#overlay').show();
+
+        try {
+            const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(chapterUrl), {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Redmi S2 Build/QQ3A.200705.002) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.107 Mobile Safari/537.36'
+                }
+            });
+
+            const result = await response.text();
+            const doc = $.parseHTML(result);
+
+            const images = $(doc).find('img').map(function() {
+                return $(this).attr('src');
+            }).get();
+
+            if (images.length > 0) {
+                const chapterImagesDiv = $('#chapterImages');
+                chapterImagesDiv.empty(); // Clean up previous chapter images
+                images.forEach(function(imageUrl) {
+                    // If image URL is relative, add domain
+                    if (!imageUrl.startsWith('http')) {
+                        imageUrl = 'https://komik-cast.com' + imageUrl;
+                    }
+
+                    chapterImagesDiv.append(`
+                        <div class="chapter-image">
+                            <img src="https://images.weserv.nl/?w=300&q=70&url=${encodeURIComponent(imageUrl)}" alt="Chapter Image">
+                        </div>
+                    `);
+                });
+
+                // Mengambil chapter URLs dari localStorage dan membalikkan urutannya
+                const chapterUrls = JSON.parse(localStorage.getItem('chapterUrls') || '[]').reverse();
+                const currentChapterIndex = chapterUrls.indexOf(chapterUrl);
+
+                if (currentChapterIndex !== -1 && chapterUrls.length > currentChapterIndex + 1) {
+                    const nextChapterUrl = chapterUrls[currentChapterIndex + 1];
+
+                    $('#nextChapterButton').show().off('click').on('click', function () {
+                        window.location.href = 'chapter-images.html?chapterUrl=' + encodeURIComponent(nextChapterUrl);
+                    });
+                } else {
+                    $('#nextChapterButton').hide(); // Hide the button if there is no next chapter
+                }
+            } else {
+                $('#chapterImages').html('<p>Gambar chapter tidak ditemukan.</p>');
+            }
+        } catch (error) {
+            console.error('Error fetching chapter images:', error);
+        } finally {
+    setTimeout(function() {
+        $('#overlay').hide();
+    }, 3000); // 2000 milliseconds = 2 seconds
+      }
+    }
+});
+</script>
+
+
+
+</body>
+</html>
