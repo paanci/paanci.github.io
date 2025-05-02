@@ -1,5 +1,6 @@
-img { 
+.chapter-image img { 
     pointer-events: none;
+    width: 100%;
 }
 
 #any { 
@@ -301,8 +302,8 @@ button:hover {
     
 /* IMAGE CHAPTER STYLING */
 #chapterImages {
-    width: 60%;
-    margin-left: 25px;
+    width: 73%;
+    margin-left: 45px;
     border: 2px solid #999; 
     display: grid;
     margin-top: 10px;
