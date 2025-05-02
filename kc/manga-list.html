@@ -46,7 +46,7 @@
                         const link = $(this).find('a').attr('href');
                         const imgUrl = $(this).find('img').attr('src');
 
-                        const resizedImgUrl = `https://resize.sardo.work/?width=55&height=55&imageUrl=${encodeURIComponent(imgUrl)}`;
+                        const resizedImgUrl = `https://images.weserv.nl/?w=55&=55&url=${encodeURIComponent(imgUrl)}`;
 
                         if (title && link && imgUrl && !seenMangas.has(link)) {
                             seenMangas.add(link);
