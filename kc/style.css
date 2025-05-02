@@ -301,7 +301,7 @@ button:hover {
     
 /* IMAGE CHAPTER STYLING */
 #chapterImages {
-    width: 83.4%;
+    width: 60%;
     margin-left: 25px;
     border: 2px solid #999; 
     display: grid;
